@@ -1,5 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.1</LangVersion>
+    <Authors>Sebastien Lambla</Authors>
+    <Owner>serialseb</Owner>
+    <PackageProjectUrl>https://github.com/serialseb/Tadis</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/serialseb/Tardis/blob/master/LICENSE.md</PackageLicenseUrl>
+    <Description>A time travelling library for .net</Description>
+    <PackageTags>dotnet csharp unit-test time-travel</PackageTags>
+    <Version>1.0.0</Version>
+    <Copyright>Copyright 2018</Copyright>
+    <PackageId>Tardis</PackageId>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Company>Videndel</Company>
+    <InformationalVersion>1.0.0</InformationalVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 </Project>
