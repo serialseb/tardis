@@ -11,20 +11,20 @@ After writing an equivalent to this on each and every project over the last few 
 
 With Tardis, you can freeze time and navigate it as you wish.
 
-```chsarp
-    static async Task Main()
-    {
-      var clock = new Clock();
-      clock.Freeze(DateTimeOffset.Parse("23 Nov 1963 +0000"));
+```csharp
+static async Task Main()
+{
+  var clock = new Clock();
+  clock.Freeze(DateTimeOffset.Parse("23 Nov 1963 +0000"));
 
-      Console.WriteLine(clock.UtcNow());
-      // prints 23/11/1963 00:00:00 +01:00
+  Console.WriteLine(clock.UtcNow());
+  // prints 23/11/1963 00:00:00 +01:00
 
-      await clock.MoveForward(TimeSpan.FromDays(1));
-      
-      Console.WriteLine(clock.UtcNow());
-      // prints 24/11/1963 00:00:00 +01:00
-    }
+  await clock.MoveForward(TimeSpan.FromDays(1));
+  
+  Console.WriteLine(clock.UtcNow());
+  // prints 24/11/1963 00:00:00 +01:00
+}
 ```
 
 You can now design your libary to use lambdas to get the current time.
@@ -91,20 +91,20 @@ It's common for classes to delay some processing until later, using `Task.Delay(
 Fortunately, Tardis also provides support for this.
 
 ```csharp
-  class DelayProgram
+class DelayProgram
+{
+  static async Task Main()
   {
-    static async Task Main()
-    {
-      var clock = new Clock();
-      clock.Freeze();
-
-      var delay = clock.Delay(TimeSpan.FromMinutes(1));
-      await clock.MoveForward(TimeSpan.FromMinutes(1));
-
-      await delay;
-      Console.WriteLine("Task was delayed by one minute, but returned immediately after the clock move forward");
-    }
+    var clock = new Clock();
+    clock.Freeze();
+  
+    var delay = clock.Delay(TimeSpan.FromMinutes(1));
+    await clock.MoveForward(TimeSpan.FromMinutes(1));
+  
+    await delay;
+    Console.WriteLine("Task was delayed by one minute, but returned immediately after the clock move forward");
   }
+}
 ```
 
 This also works on multipe threads. 
@@ -114,43 +114,43 @@ This also works on multipe threads.
 You can also use the lambda approach to generate stopwatches that will respect the clock time.
 
 ```csharp
-  class StopwatchProgram
+class StopwatchProgram
+{
+  static async Task Main()
   {
-    static async Task Main()
-    {
-      var clock = new Clock();
-      clock.Freeze();
-
-      var stopWatch = clock.Stopwatch();
-      stopWatch.start();
-
-      Console.WriteLine(stopWatch.elapsed());
-      // Prints 00:00:00
-
-      await clock.MoveForward(TimeSpan.FromMinutes(1));
-      Console.WriteLine(stopWatch.elapsed());
-      // Prints 00:01:00
-    }
+    var clock = new Clock();
+    clock.Freeze();
+  
+    var stopWatch = clock.Stopwatch();
+    stopWatch.start();
+  
+    Console.WriteLine(stopWatch.elapsed());
+    // Prints 00:00:00
+  
+    await clock.MoveForward(TimeSpan.FromMinutes(1));
+    Console.WriteLine(stopWatch.elapsed());
+    // Prints 00:01:00
   }
+}
 ```
 
 Your library would depend on the following lambda.
 
-```
-  class StopwatchConsumer
+```csharp
+class StopwatchConsumer
+{
+  Func<(Func<TimeSpan> elapsed, Action start, Action stop)> _stopwatch = () =>
   {
-    Func<(Func<TimeSpan> elapsed, Action start, Action stop)> _stopwatch = () =>
-    {
-      var sw = new Stopwatch();
-      return (() => sw.Elapsed, sw.Start, sw.Stop);
-    };
-
-    public StopwatchConsumer(Func<(Func<TimeSpan> elapsed, Action start, Action stop)> stopwatch = null)
-    {
-      if (stopwatch != null)
-        _stopwatch = stopwatch;
-    }
+    var sw = new Stopwatch();
+    return (() => sw.Elapsed, sw.Start, sw.Stop);
   }
+  
+  public StopwatchConsumer(Func<(Func<TimeSpan> elapsed, Action start, Action stop)> stopwatch = null)
+  {
+    if (stopwatch != null)
+      _stopwatch = stopwatch;
+  }
+}
 ```
 
 The lambda looks a bit odd, but it makes your library dependency-free.
@@ -159,7 +159,7 @@ The lambda looks a bit odd, but it makes your library dependency-free.
 
 The Tardis.FluentTime package allow you to create dates, times and timespans in a more natural fashion.
 
-```
+```csharp
 // create a TimeSpan of 2 seconds
 var twoSecondsTimeSpan = 2.Seconds();
 
