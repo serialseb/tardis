@@ -61,14 +61,14 @@ public class MyClass
   }
 }
 
-publi class MyClassTest
+public class MyClassTest
 {
     [Fact]
     public void time_is_logged()
     {
+        var clock = new Clock();
         var myClass = new MyClass(clock.UtcNow);
         
-        var clock = new Clock();
         clock.Freeze();
         var frozenTime = clock.UtcNow();
         // the clock is now frozen and will always return the same value
