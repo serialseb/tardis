@@ -2,16 +2,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tardis", "Tardis\Tardis.csproj", "{0F7229B2-86A3-4C10-96F7-CEAC91D467E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "..\Tests\Tests.csproj", "{27776A6D-05AE-44DF-80FA-8B50C012D377}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{27776A6D-05AE-44DF-80FA-8B50C012D377}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tardis.FluentTime", "..\Tardis.FluentTime\Tardis.FluentTime.csproj", "{C84BFBB6-4C9C-4BC0-89B0-5F68D75BF738}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tardis.FluentTime", "Tardis.FluentTime\Tardis.FluentTime.csproj", "{C84BFBB6-4C9C-4BC0-89B0-5F68D75BF738}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".meta", ".meta", "{E1C2AE3A-58CC-42F1-A7C1-2500580FB133}"
 ProjectSection(SolutionItems) = preProject
-	..\..\LICENSE.md = ..\..\LICENSE.md
-	..\..\README.md = ..\..\README.md
-	..\..\CHANGELOG.md = ..\..\CHANGELOG.md
-	..\..\appveyor.yml = ..\..\appveyor.yml
+	..\LICENSE.md = ..\LICENSE.md
+	..\README.md = ..\README.md
+	..\CHANGELOG.md = ..\CHANGELOG.md
+	..\appveyor.yml = ..\appveyor.yml
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tardis.Demos", "Tardis.Demos\Tardis.Demos.csproj", "{51846C2A-21CD-4425-B045-C96325B8CB4C}"

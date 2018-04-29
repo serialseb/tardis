@@ -12,6 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tardis.FluentTime\Tardis.FluentTime.csproj" />
-    <ProjectReference Include="..\Tardis\Tardis\Tardis.csproj" />
+    <ProjectReference Include="..\Tardis\Tardis.csproj" />
   </ItemGroup>
 </Project>
