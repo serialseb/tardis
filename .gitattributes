@@ -1,0 +1,22 @@
+*	text=auto
+/infra/* text eol=lf
+
+# The following file extensions should be treated as text files and use
+# Windows style line endings
+*.Config	eol=crlf
+*.config	eol=crlf
+*.sln		eol=crlf
+ 
+# Treat binary files as binary
+*.dll		binary
+*.gif		binary
+*.jpg		binary
+*.nupkg		binary
+*.pdb		binary
+*.png		binary
+*.ssc		binary
+
+*.tf        eol=lf
+*.hcl       eol=lf
+*.sh        eol=lf
+*.ps1       eol=crlf

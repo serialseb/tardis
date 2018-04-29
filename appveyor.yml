@@ -1,0 +1,87 @@
+configuration: Release
+#platform: Any CPU
+image: Visual Studio 2017
+
+install:
+  - set PATH=C:\Ruby23\bin;%PATH%
+  - ps: $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
+  - ps: "[System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols"
+  - ps: mkdir c:\ca; iwr https://curl.haxx.se/ca/cacert.pem -outfile C:\ca\cacert.pem
+  - set SSL_CERT_FILE=C:\ca\cacert.pem
+  - ps: |
+        $build = $env:APPVEYOR_BUILD_NUMBER
+        $branch = $env:APPVEYOR_REPO_BRANCH
+        
+        if ($env:APPVEYOR_REPO_TAG -eq "true") {
+          echo "Version: Using git tag $env:APPVEYOR_REPO_TAG_NAME"
+          
+          if (-not $env:APPVEYOR_REPO_TAG -match "^(\d+\.\d+\.\d+)") {
+            throw "Invalid version in tag name"
+          }          
+          $version = [version]$Matches[0]
+          
+          $semver = $env:APPVEYOR_REPO_TAG_NAME
+          
+        } else {
+          $semver = (git describe --abbrev=0 2>&1);
+          if ($LASTEXITCODE -ne 0) { $semver = "1.0.0-preview.0" };
+          
+          echo "Version: Using base semver $semver"
+          
+          $semver -match "^(\d+\.\d+\.\d+)"
+          $version = [version]$Matches[0]
+          
+          $semver += ".$build"
+          
+          
+          if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
+            $semver += "+pr.$env:APPVEYOR_PULL_REQUEST_NUMBER"
+          } else {
+            $semver += "+$branch"
+          }
+        }
+        
+        Set-AppveyorBuildVariable -Name "AssemblyMajor" -Value $version.Major
+        Update-AppVeyorBuild -Version "$semver"
+
+  - gem install chandler --no-ri --no-rdoc
+  - ps: set-content ~/.netrc "machine api.github.com login $env:github_username password $env:github_password" -encoding ascii
+  - ps: cp ~/.netrc ~/_netrc
+  - ps: if ($branch -eq "master") { chandler push }
+          
+
+before_build:
+  - cmd: set PATH=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin;%PATH%
+  - cd src && nuget restore
+
+
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  assembly_version: $(AssemblyMajor).0.0.0
+  file_version: '{version}'
+  informational_version: '{version}'
+
+build:
+  parallel: true
+  verbosity: minimal
+  publish_nuget: true
+  publish_nuget_symbols: true
+  include_nuget_references: true
+
+
+artifacts:
+  - path: 'src\*.nupkg'
+    
+environment:
+  SSL_CERT_FILE: C:\ca\cacert.pem
+  github_username: serialseb
+  github_password:
+    secure:
+      1lXaOJ0GvCAOd0O9DDvVqw2eb7TvP2jve12u3hD2g4J7RVW2c2jC5XuRFyEuduUA
+
